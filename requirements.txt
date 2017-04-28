@@ -1,14 +1,22 @@
 # ----------------------
 # Flask
 # ----------------------
-flask
 Flask-WTF
 Flask-SQLAlchemy
 Flask-Migrate
 Flask-Login
+Flask-JWT
 psycopg2
+
+Flask
+requests
+beautifulsoup4
+
+lxml
+PyJWT
 
 # ----------------------
 # Production Server
 # ----------------------
 gunicorn
+

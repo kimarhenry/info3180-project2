@@ -1,20 +1,21 @@
 {% extends "base.html" %}
 
 {% block main %}
-  <div class="login-form center-block">
-    <h2>Please Log in</h2>
+  <div class="login-form center-block" ng-app="project2" ng-controller="project2Controller">
+    <h2>Log in</h2>
+    <br/>
     {% include 'flash_messages.html' %}
     <form action="{{ url_for('login') }}" method="post">
       {{ form.csrf_token }}
       <div class="form-group">
-        {{ form.username.label }}
-        {{ form.username(class='form-control', placeholder="Enter your username") }}
+        {{ form.email.label }}
+        {{ form.email(class='form-control', placeholder="Enter your email Herer") }}
       </div>
       <div class="form-group">
         {{ form.password.label }}
-        {{ form.password(class='form-control') }}
+        {{ form.password(class='form-control', placeholder="Enter you password here") }}
       </div>
-      <button type="submit" name="submit" class="btn btn-primary btn-block">Log in</button>
+      <button type="submit" name="submit" class="btn btn-primary btn-block" ng-click="getToken()">Log in</button>
     </form>
   </div>
 {% endblock %}

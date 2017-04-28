@@ -1,3 +1,62 @@
 body {
     padding-top: 50px;
 }
+
+.item{
+    position:relative;
+    display:inline-block;
+    float:left;
+    width:100%;
+    height:180px;
+    background-color: #f2f2f2;
+    border-radius:10px;
+    margin-right:20px;
+    padding:15px 15px 15px 15px;
+    margin-top:20px;
+}
+
+.item-thumbnail{
+    position: absolute;
+    left:10px;
+    top:10px;
+    height:160px;
+    width:200px;
+}
+
+.item-title{
+    position: absolute;
+    left:220px;
+    top:10px;
+}
+
+.item-description{
+    position: absolute;
+    left:220px;
+    top:30px;
+}
+
+.item-webaddress{
+    position: absolute;
+    left:220px;
+    top:50px;
+}
+
+.thumbnail{
+    position:relative;
+    display:inline-block;
+    float:left;
+    width:25%;
+    height:150px;
+    background-color: cadetblue;
+    border-radius:2px;
+    margin-left:25px;
+    margin-right:20px;
+    margin-bottom:20px;
+    margin-top:20px;
+}
+
+.thumbnail > img{
+    position:relative;
+    height:75%;
+    width:90%;
+}

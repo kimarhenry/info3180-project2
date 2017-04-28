@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <h2>Wishlist</h2>
+    {% include 'flash_messages.html' %}
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newItem">New Item</button>
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#shareWishlist">Share It!</button>
+    <hr/>
+
+    {% for item in items %}
+        <div class="item">
+        <form  action="{{ url_for('removeitem', userid=current_user.get_id(), itemid=item.id) }}" method="delete">
+            <button type="submit" name="submit"  class="close">&times;</button>
+        </form>
+            <div>
+                <div><img class="item-thumbnail" src="{{ item.thumbnail }}"/></div>
+                <div class="item-title"><strong>{{ item.title }}</strong></div><br/>
+                <div class="item-description">{{ item.description }}</div><br/>
+                <div class="item-webaddress"><a href="{{ item.webaddress }}">Link</a></div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function($scope, $http) {
+
+            $scope.scrape=function(){
+                $http.get("/api/thumbnails", {params: {url: $scope.scrape_url}})
+                 .then(function(response) {
+                 $scope.thumbnails = response.data.thumbnails;
+                 });
+            }
+
+        });
+    </script>
+
+    <!-- Modal -->
+    <div class="modal fade" id="newItem" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <form  ng-app="myApp" ng-controller="myCtrl" action="{{ url_for('wishlist',userid=current_user.get_id()) }}" method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">New Item Here</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        {{ form.csrf_token }}
+                        <div class="form-group">
+                            {{ form.title.label }}
+                            {{ form.title(class='form-control', placeholder="Enter item title here") }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.description.label }}
+                            {{ form.description(class='form-control', placeholder="Description of Item") }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.webaddress.label }}
+                            <div>{{ form.webaddress(class='form-control', placeholder="Image URL here", **{'ng-model':'scrape_url' , 'ng-keyup':'scrape()'}) }}</div>
+
+                        </div>
+                        {% raw %}
+                        <div>
+                            <div ng-repeat="thumb in thumbnails track by $index">
+                                <div class="thumbnail">
+                                    <input type="radio" name="thumbnail" value="{{ thumb }}" required>
+                                    <img src="{{ thumb }}">
+                                </div>
+                            </div>
+
+                        </div>
+                        {% endraw %}
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" name="submit" class="btn btn-primary btn-block">Add Item</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="shareWishlist" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <form action="{{ url_for('sharewishlist',userid=current_user.get_id()) }}" method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Login first to Share</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{ form.csrf_token }}
+                        <div class="form-group">
+                            {{ form3.email.label }}
+                            {{ form3.email(class='form-control', placeholder="Enter sender email address") }}
+                        </div>
+                        <div class="form-group">
+                            {{ form3.password.label }}
+                            {{ form3.password(class='form-control', placeholder="Enter sender password") }}
+                        </div>
+                    </div>
+
+                    <div class="modal-header">
+                        <h4 class="modal-title">Share Your Wishlist!</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        {{ form.csrf_token }}
+                        <div class="form-group">
+                            {{ form2.name.label }}
+                            {{ form2.name(class='form-control', placeholder="Enter name of recipient") }}
+                        </div>
+                        <div class="form-group">
+                            {{ form2.recipientemail.label }}
+                            {{ form2.recipientemail(class='form-control', placeholder="Enter email address of recipient") }}
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" name="submit" class="btn btn-primary btn-block">Share</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
